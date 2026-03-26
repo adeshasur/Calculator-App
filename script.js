@@ -80,6 +80,7 @@ class Calculator {
         this.operation = null;
         this.updateDisplay();
         this.displayExpression.textContent = '';
+        this.displayExpression.style.visibility = 'hidden';
     }
 
     toggleSign() {
@@ -138,6 +139,7 @@ class Calculator {
         this.shouldResetDisplay = true;
         this.updateDisplay();
         this.displayExpression.textContent = '';
+        this.displayExpression.style.visibility = 'hidden';
     }
 
     formatResult(number) {
@@ -189,6 +191,7 @@ class Calculator {
         }
         
         this.displayExpression.textContent = expression;
+        this.displayExpression.style.visibility = expression ? 'visible' : 'hidden';
     }
 
     handleKeyboard(e) {
