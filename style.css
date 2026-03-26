@@ -13,11 +13,9 @@ html {
 
 body {
     align-items: center;
-    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #16213e 50%, #0f3460 100%), 
-                radial-gradient(circle at 20% 80%, rgba(215, 40, 128, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(0, 122, 255, 0.1) 0%, transparent 40%);
+    background: #0a0a0a; /* Solid deep black */
     display: flex;
-    font-family: 'Inter', sans-serif; /* Primary UI font */
+    font-family: 'Inter', sans-serif;
     font-display: swap;
     height: inherit;
     justify-content: center;
@@ -26,15 +24,13 @@ body {
 }
 
 .wrapper {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     color: #ffffff;
     flex-basis: 400px;
-    height: 580px;
+    height: 560px;
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -48,21 +44,18 @@ body {
 }
 
 .screen {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 18px;
-    box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
     color: #ffffff;
-    font-family: 'Dosis', sans-serif; /* For the digital feel */
-    font-weight: 600;
-    font-size: 44px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 42px;
     overflow: auto;
     padding: 30px;
     text-align: right;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .calc-btns {
@@ -79,56 +72,45 @@ body {
 }
 
 .calc-btn {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    background: rgba(255, 255, 255, 0.08);
+    background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 18px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
     color: #ffffff;
     font-family: 'Inter', sans-serif;
-    font-size: 26px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 400;
     height: 70px;
     width: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy feel */
+    transition: all 0.2s ease;
 }
 
 .calc-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-    transform: translateY(-4px) scale(1.05);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .calc-btn:active {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(0.92);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(0.96);
 }
 
 /* Category Based Styles */
-.btn-clear, .btn-back {
-    color: #ff9f0a; /* Amber for dangerous/special actions */
-}
-
-.btn-op {
-    color: #007aff; /* iOS Blue for operators */
-    font-weight: 600;
+.btn-clear, .btn-back, .btn-op {
+    color: #aaaaaa; /* Medium grey for functional elements */
 }
 
 .btn-eq {
-    background: linear-gradient(135deg, #ff2d55 0%, #d72880 100%);
-    box-shadow: 0 4px 20px rgba(215, 40, 128, 0.4);
-    color: #fff !important;
-    font-weight: 700;
+    background: #ffffff; /* Solid white */
+    color: #000000 !important; /* Black text */
+    font-weight: 600;
 }
 
 .btn-eq:hover {
-    box-shadow: 0 0 30px rgba(215, 40, 128, 0.6);
+    background: #f0f0f0;
 }
 
 .btn-num {
