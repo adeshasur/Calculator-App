@@ -1,65 +1,221 @@
-const screen = document.querySelector('.screen');
-const buttons = document.querySelectorAll('.calc-btn');
+class Calculator {
+    constructor() {
+        this.displayResult = document.getElementById('result');
+        this.displayExpression = document.getElementById('expression');
+        this.currentOperand = '0';
+        this.previousOperand = '';
+        this.operation = null;
+        this.shouldResetDisplay = false;
+        
+        this.init();
+    }
 
-let currentInput = '0';
-let previousInput = '';
-let operation = null;
+    init() {
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', () => this.handleButtonClick(button));
+        });
 
-function updateScreen(value) {
-    screen.textContent = value;
-}
+        document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+    }
 
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        const value = button.textContent.trim();
+    handleButtonClick(button) {
+        button.classList.add('pressed');
+        setTimeout(() => button.classList.remove('pressed'), 150);
 
-        if (!isNaN(value)) {
-            if (currentInput === '0') {
-                currentInput = value;
-            } else {
-                currentInput += value;
-            }
-        } else if (value === 'C') {
-            currentInput = '0';
-            previousInput = '';
-            operation = null;
-        } else if (value === '←') {
-            currentInput = currentInput.slice(0, -1) || '0';
-        } else if (value === '=') {
-            if (operation && previousInput) {
-                currentInput = evaluateExpression(previousInput, currentInput, operation);
-                previousInput = '';
-                operation = null;
-            }
+        const action = button.dataset.action;
+        const value = button.textContent;
+
+        if (button.classList.contains('btn-number')) {
+            this.inputNumber(value);
+        } else if (action) {
+            this.inputAction(action, value);
+        }
+    }
+
+    inputNumber(num) {
+        if (this.shouldResetDisplay) {
+            this.currentOperand = num;
+            this.shouldResetDisplay = false;
         } else {
-            if (operation && previousInput) {
-                currentInput = evaluateExpression(previousInput, currentInput, operation);
+            if (this.currentOperand === '0' && num !== '.') {
+                this.currentOperand = num;
+            } else if (num === '.' && !this.currentOperand.includes('.')) {
+                this.currentOperand += '.';
+            } else if (num !== '.') {
+                this.currentOperand += num;
             }
-            previousInput = currentInput;
-            currentInput = '0';
-            operation = value;
+        }
+        this.updateDisplay();
+    }
+
+    inputAction(action, value) {
+        switch (action) {
+            case 'clear':
+                this.clear();
+                break;
+            case 'toggle-sign':
+                this.toggleSign();
+                break;
+            case 'percent':
+                this.percent();
+                break;
+            case 'operator':
+                this.setOperation(value);
+                break;
+            case 'equals':
+                this.calculate();
+                break;
+            case 'decimal':
+                this.inputNumber('.');
+                break;
+            case 'zero':
+                this.inputNumber('0');
+                break;
+        }
+    }
+
+    clear() {
+        this.currentOperand = '0';
+        this.previousOperand = '';
+        this.operation = null;
+        this.updateDisplay();
+        this.displayExpression.textContent = '';
+    }
+
+    toggleSign() {
+        if (this.currentOperand !== '0') {
+            this.currentOperand = this.currentOperand.startsWith('-') 
+                ? this.currentOperand.slice(1) 
+                : '-' + this.currentOperand;
+            this.updateDisplay();
+        }
+    }
+
+    percent() {
+        const value = parseFloat(this.currentOperand);
+        this.currentOperand = (value / 100).toString();
+        this.updateDisplay();
+    }
+
+    setOperation(nextOperation) {
+        if (this.operation && !this.shouldResetDisplay) {
+            this.calculate();
         }
 
-        updateScreen(currentInput);
-    });
-});
+        this.previousOperand = this.currentOperand;
+        this.operation = nextOperation;
+        this.shouldResetDisplay = true;
+        this.updateExpression();
+    }
 
-function evaluateExpression(num1, num2, operator) {
-    const a = parseFloat(num1);
-    const b = parseFloat(num2);
+    calculate() {
+        let result;
+        const prev = parseFloat(this.previousOperand);
+        const current = parseFloat(this.currentOperand);
 
-    switch (operator) {
-        case '+':
-            return (a + b).toString();
-        case '−':
-            return (a - b).toString();
-        case '×':
-            return (a * b).toString();
-        case '÷':
-            return b !== 0 ? (a / b).toString() : 'Error';
-        default:
-            return '0';
+        if (isNaN(prev) || isNaN(current)) return;
+
+        switch (this.operation) {
+            case '+':
+                result = prev + current;
+                break;
+            case '−':
+                result = prev - current;
+                break;
+            case '×':
+                result = prev * current;
+                break;
+            case '÷':
+                result = current !== 0 ? prev / current : 'Error';
+                break;
+            default:
+                return;
+        }
+
+        this.currentOperand = this.formatResult(result);
+        this.operation = null;
+        this.previousOperand = '';
+        this.shouldResetDisplay = true;
+        this.updateDisplay();
+        this.displayExpression.textContent = '';
+    }
+
+    formatResult(number) {
+        if (number === 'Error') return 'Error';
+        
+        const stringNumber = number.toString();
+        const integerDigits = parseFloat(stringNumber.split('.')[0]);
+        const decimalDigits = stringNumber.split('.')[1];
+        
+        let integerDisplay;
+        if (isNaN(integerDigits)) {
+            integerDisplay = '0';
+        } else {
+            integerDisplay = integerDigits.toLocaleString('en', { 
+                maximumFractionDigits: 0 
+            });
+        }
+
+        if (decimalDigits != null) {
+            return `${integerDisplay}.${decimalDigits}`;
+        } else {
+            return integerDisplay;
+        }
+    }
+
+    updateDisplay() {
+        this.displayResult.textContent = this.currentOperand;
+        
+        if (this.displayResult.textContent.length > 10) {
+            this.displayResult.style.fontSize = '32px';
+        } else {
+            this.displayResult.style.fontSize = '48px';
+        }
+    }
+
+    updateExpression() {
+        let expression = '';
+        
+        if (this.previousOperand !== '') {
+            expression += this.formatResult(this.previousOperand);
+        }
+        
+        if (this.operation !== null) {
+            expression += ` ${this.operation} `;
+        }
+        
+        if (this.shouldResetDisplay && this.operation !== null) {
+            expression += this.formatResult(this.currentOperand);
+        }
+        
+        this.displayExpression.textContent = expression;
+    }
+
+    handleKeyboard(e) {
+        const key = e.key;
+        
+        if (/[0-9.]/.test(key)) {
+            this.inputNumber(key);
+        } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+            const opMap = { '*': '×', '/': '÷', '+': '+', '-': '−' };
+            this.setOperation(opMap[key] || key);
+        } else if (key === 'Enter' || key === '=') {
+            this.calculate();
+        } else if (key === 'Escape' || key === 'c' || key === 'C') {
+            this.clear();
+        } else if (key === '%') {
+            this.percent();
+        } else if (key === 'Backspace') {
+            if (this.currentOperand.length > 1) {
+                this.currentOperand = this.currentOperand.slice(0, -1);
+            } else {
+                this.currentOperand = '0';
+            }
+            this.updateDisplay();
+        }
     }
 }
 
-updateScreen(currentInput);
+document.addEventListener('DOMContentLoaded', () => {
+    new Calculator();
+});

@@ -3,85 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Calculator</title>
+    <title>Super Calc</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="wrapper">
-        <section class = "screen">
-            0
-        </section>
-        <section class ="calc-btns">
-            <div class="calc-btn-row">
-                <button class="calc-btn double btn-clear">
-                    C
-                </button>
-                <button class="calc-btn btn-back">
-                    &larr;
-                </button>
-                <button class="calc-btn btn-op">
-                    &divide;
-                </button>
+    <div class="calculator">
+        <div class="display">
+            <div class="display-expression" id="expression"></div>
+            <div class="display-result" id="result">0</div>
+        </div>
+        
+        <div class="keyboard">
+            <div class="row">
+                <button class="btn btn-function" data-action="clear">AC</button>
+                <button class="btn btn-function" data-action="toggle-sign">±</button>
+                <button class="btn btn-function" data-action="percent">%</button>
+                <button class="btn btn-operator" data-action="operator">÷</button>
             </div>
-
-            <div class="calc-btn-row">
-                <button class="calc-btn btn-num">
-                    7
-                </button>
-                <button class="calc-btn btn-num">
-                    8
-                </button>
-                <button class="calc-btn btn-num">
-                    9
-                </button>
-                <button class="calc-btn btn-op">
-                    &times;
-                </button>
+            <div class="row">
+                <button class="btn btn-number">7</button>
+                <button class="btn btn-number">8</button>
+                <button class="btn btn-number">9</button>
+                <button class="btn btn-operator" data-action="operator">×</button>
             </div>
-
-            <div class="calc-btn-row">
-                <button class="calc-btn btn-num">
-                    4
-                </button>
-                <button class="calc-btn btn-num">
-                    5
-                </button>
-                <button class="calc-btn btn-num">
-                    6
-                </button>
-                <button class="calc-btn btn-op">
-                    &minus;
-                </button>
+            <div class="row">
+                <button class="btn btn-number">4</button>
+                <button class="btn btn-number">5</button>
+                <button class="btn btn-number">6</button>
+                <button class="btn btn-operator" data-action="operator">−</button>
             </div>
-
-            <div class="calc-btn-row">
-                <button class="calc-btn btn-num">
-                    1
-                </button>
-                <button class="calc-btn btn-num">
-                    2
-                </button>
-                <button class="calc-btn btn-num">
-                    3
-                </button>
-                <button class="calc-btn btn-op">
-                    &plus;
-                </button>
+            <div class="row">
+                <button class="btn btn-number">1</button>
+                <button class="btn btn-number">2</button>
+                <button class="btn btn-number">3</button>
+                <button class="btn btn-operator" data-action="operator">+</button>
             </div>
-
-            <div class="calc-btn-row">
-                <button class="calc-btn btn-num">
-                    0
-                </button>
-                <button class="calc-btn btn-eq">
-                    &equals;
-                </button>
+            <div class="row">
+                <button class="btn btn-number btn-double" data-action="zero">0</button>
+                <button class="btn btn-number" data-action="decimal">.</button>
+                <button class="btn btn-operator" data-action="equals">=</button>
             </div>
-
-        </section>
+        </div>
     </div>
 
     <script src="script.js"></script>

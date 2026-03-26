@@ -1,126 +1,195 @@
-html {
-    box-sizing: border-box;
-    height: 100%;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: inherit;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    align-items: center;
-    background: #0a0a0a; /* Solid deep black */
+    min-height: 100vh;
     display: flex;
-    font-family: 'Inter', sans-serif;
-    font-display: swap;
-    height: inherit;
+    align-items: center;
     justify-content: center;
+    background: #000000;
+    font-family: 'Space Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+}
+
+.calculator {
+    width: 320px;
+    background: #0a0a0a;
+    border-radius: 40px;
+    padding: 20px;
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.display {
+    background: #000000;
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.display-expression {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 8px;
+    word-break: break-all;
+    max-width: 100%;
+    text-align: right;
+    transition: all 0.15s ease;
+}
+
+.display-result {
+    font-size: 48px;
+    font-weight: 700;
     color: #ffffff;
+    letter-spacing: -2px;
+    word-break: break-all;
+    max-width: 100%;
+    text-align: right;
+    transition: all 0.15s ease;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     overflow: hidden;
 }
 
-.wrapper {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+.btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.btn:active::before {
+    opacity: 1;
+}
+
+.btn-number {
+    background: #1a1a1a;
     color: #ffffff;
-    flex-basis: 400px;
-    height: 560px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    animation: fadeIn 0.8s ease-out;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.btn-number:hover {
+    background: #222222;
 }
 
-.screen {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+.btn-number:active {
+    background: #111111;
+    transform: scale(0.95);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.btn-function {
+    background: #333333;
+    color: #000000;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-function:hover {
+    background: #444444;
+}
+
+.btn-function:active {
+    background: #222222;
     color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 42px;
-    overflow: auto;
-    padding: 30px;
-    text-align: right;
-    width: 100%;
-    margin-bottom: 25px;
+    transform: scale(0.95);
 }
 
-.calc-btns {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px; 
+.btn-operator {
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 
+        0 4px 12px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.calc-btn-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px; 
+.btn-operator:hover {
+    background: #f5f5f5;
 }
 
-.calc-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 400;
-    height: 70px;
-    width: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.btn-operator:active {
+    background: #e0e0e0;
+    transform: scale(0.95);
 }
 
-.calc-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
+.btn-double {
+    width: 146px;
+    border-radius: 34px;
+    justify-content: flex-start;
+    padding-left: 28px;
 }
 
-.calc-btn:active {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(0.96);
+@keyframes press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
 }
 
-/* Category Based Styles */
-.btn-clear, .btn-back, .btn-op {
-    color: #aaaaaa; /* Medium grey for functional elements */
+.btn.pressed {
+    animation: press 0.15s ease;
 }
 
-.btn-eq {
-    background: #ffffff; /* Solid white */
-    color: #000000 !important; /* Black text */
-    font-weight: 600;
-}
-
-.btn-eq:hover {
-    background: #f0f0f0;
-}
-
-.btn-num {
-    color: #ffffff;
-}
-
-.double {
-    flex-basis: 47%;
-}
-
-.triple {
-    flex-basis: 73%;
+@media (max-width: 360px) {
+    .calculator {
+        width: 100%;
+        border-radius: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .btn {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .btn-double {
+        width: 130px;
+    }
 }
