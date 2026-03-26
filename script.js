@@ -196,18 +196,32 @@ class Calculator {
 
     handleKeyboard(e) {
         const key = e.key;
-        
-        if (/[0-9.]/.test(key)) {
+        let button = null;
+
+        if (/[0-9]/.test(key)) {
             this.inputNumber(key);
-        } else if (key === '+' || key === '-' || key === '*' || key === '/') {
-            const opMap = { '*': '×', '/': '÷', '+': '+', '-': '−' };
-            this.setOperation(opMap[key] || key);
+            if (key === '0') {
+                button = document.querySelector('[data-action="zero"]');
+            } else {
+                button = Array.from(document.querySelectorAll('.btn-number')).find(b => b.textContent === key);
+            }
+        } else if (key === '.' || key === ',') {
+            this.inputNumber('.');
+            button = document.querySelector('[data-action="decimal"]');
+        } else if (key === '+' || key === '-' || key === '*' || key === '/' || key === 'x' || key === 'X') {
+            const opMap = { '*': '×', 'x': '×', 'X': '×', '/': '÷', '+': '+', '-': '−' };
+            const opValue = opMap[key];
+            this.setOperation(opValue);
+            button = Array.from(document.querySelectorAll('.btn-operator')).find(b => b.textContent === opValue);
         } else if (key === 'Enter' || key === '=') {
             this.calculate();
+            button = document.querySelector('[data-action="equals"]');
         } else if (key === 'Escape' || key === 'c' || key === 'C') {
             this.clear();
+            button = document.querySelector('[data-action="clear"]');
         } else if (key === '%') {
             this.percent();
+            button = document.querySelector('[data-action="percent"]');
         } else if (key === 'Backspace') {
             if (this.currentOperand.length > 1) {
                 this.currentOperand = this.currentOperand.slice(0, -1);
@@ -215,6 +229,11 @@ class Calculator {
                 this.currentOperand = '0';
             }
             this.updateDisplay();
+        }
+
+        if (button) {
+            button.classList.add('pressed');
+            setTimeout(() => button.classList.remove('pressed'), 150);
         }
     }
 }
