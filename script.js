@@ -127,46 +127,64 @@ class Calculator {
                 result = prev * current;
                 break;
             case '÷':
-                result = current !== 0 ? prev / current : 'Error';
+                if (current === 0) {
+                    this.currentOperand = 'Error';
+                    this.operation = null;
+                    this.previousOperand = '';
+                    this.shouldResetDisplay = true;
+                    this.updateDisplay();
+                    return;
+                }
+                result = prev / current;
                 break;
             default:
                 return;
         }
 
-        this.currentOperand = this.formatResult(result);
+        // Fix precision issues
+        result = parseFloat(result.toPrecision(12));
+
+        this.currentOperand = result.toString();
         this.operation = null;
         this.previousOperand = '';
         this.shouldResetDisplay = true;
         this.updateDisplay();
-        this.displayExpression.textContent = '';
-        this.displayExpression.style.visibility = 'hidden';
+        this.updateExpression();
     }
 
-    formatResult(number) {
-        if (number === 'Error') return 'Error';
+    formatResult(operand) {
+        if (operand === 'Error' || operand === '') return operand;
         
-        const stringNumber = number.toString();
-        const integerDigits = parseFloat(stringNumber.split('.')[0]);
-        const decimalDigits = stringNumber.split('.')[1];
+        const stringNumber = operand.toString();
+        const parts = stringNumber.split('.');
+        const integerPart = parts[0];
+        const decimalPart = parts[1];
         
+        const integerDigits = parseFloat(integerPart);
         let integerDisplay;
+        
         if (isNaN(integerDigits)) {
-            integerDisplay = '0';
+            integerDisplay = integerPart === '-' ? '-' : '0';
         } else {
+            // Handle negative zero and large/small integers
             integerDisplay = integerDigits.toLocaleString('en', { 
                 maximumFractionDigits: 0 
             });
+            // If it was negative zero but toLocaleString showed "0"
+            if (integerPart === '-0' || (integerDigits === 0 && integerPart.startsWith('-'))) {
+                integerDisplay = '-' + integerDisplay;
+            }
         }
 
-        if (decimalDigits != null) {
-            return `${integerDisplay}.${decimalDigits}`;
+        if (decimalPart !== undefined) {
+            return `${integerDisplay}.${decimalPart}`;
         } else {
             return integerDisplay;
         }
     }
 
     updateDisplay() {
-        this.displayResult.textContent = this.currentOperand;
+        this.displayResult.textContent = this.formatResult(this.currentOperand);
         
         if (this.displayResult.textContent.length > 10) {
             this.displayResult.style.fontSize = '32px';
@@ -184,10 +202,10 @@ class Calculator {
         
         if (this.operation !== null) {
             expression += ` ${this.operation} `;
-        }
-        
-        if (this.shouldResetDisplay && this.operation !== null) {
-            expression += this.formatResult(this.currentOperand);
+            // Show the second operand if we're mid-calculation
+            if (!this.shouldResetDisplay) {
+                expression += this.formatResult(this.currentOperand);
+            }
         }
         
         this.displayExpression.textContent = expression;
