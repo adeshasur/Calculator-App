@@ -12,17 +12,70 @@ body {
     background: #000000;
     font-family: 'Space Mono', monospace;
     -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    position: relative;
+}
+
+.background-aura {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.aura {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    animation: drift 20s infinite alternate ease-in-out;
+}
+
+.aura-1 {
+    background: radial-gradient(circle, #ffffff 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+}
+
+.aura-2 {
+    background: radial-gradient(circle, #333333 0%, transparent 70%);
+    bottom: -150px;
+    right: -100px;
+    animation-delay: -5s;
+    animation-duration: 25s;
+}
+
+.aura-3 {
+    background: radial-gradient(circle, #1a1a1a 0%, transparent 70%);
+    top: 40%;
+    left: 30%;
+    width: 400px;
+    height: 400px;
+    animation-delay: -10s;
+    animation-duration: 30s;
+}
+
+@keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(100px, 50px) scale(1.1); }
 }
 
 .calculator {
     width: 320px;
-    background: #0a0a0a;
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
     border-radius: 40px;
-    padding: 20px;
+    padding: 24px;
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 25px 50px -12px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 25px 50px -12px rgba(0, 0, 0, 0.9),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
 .display {
