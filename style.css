@@ -16,23 +16,6 @@ body {
     position: relative;
 }
 
-.background-grid {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 60px 60px;
-    background-position: center center;
-    animation: grid-scroll 30s linear infinite;
-}
-
-@keyframes grid-scroll {
-    from { transform: translateY(0); }
-    to { transform: translateY(60px); }
-}
 
 .calculator {
     width: 320px;
