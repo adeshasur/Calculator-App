@@ -2,7 +2,7 @@
 
 A sophisticated, high-performance calculator application built with a minimalist monochrome aesthetic. This project prioritizes visual excellence, tactile responsiveness, and mathematical accuracy.
 
-![Calculator Screenshot](Screenshot%20(1080).png)
+![Calculator Screenshot](Calculator-App.png)
 
 ## ✨ Features
 
